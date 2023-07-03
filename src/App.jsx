@@ -27,7 +27,7 @@ const stages = [
   },
 ];
 
-const guesseQtdy = 5;
+const guesseQtdy = 7;
 
 function App() {
   const [gameStage, setGameStage] = useState(stages[0].name);
@@ -38,7 +38,7 @@ function App() {
   const [letters, setLetters] = useState([]);
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [wrongLetters, setWrongLetters] = useState([]);
-  const [guesses, setGuesses] = useState(5);
+  const [guesses, setGuesses] = useState(guesseQtdy);
   const [score, setScore] = useState(0);
 
   const pickWordAnCategory = useCallback(() => {
@@ -57,7 +57,6 @@ function App() {
 
     let wordLettes = word.split("");
     wordLettes = wordLettes.map((l) => l.toLowerCase());
-
     clearAllStates();
     setPickedCategory(category);
     setPickedWord(word);
@@ -104,7 +103,10 @@ function App() {
   useEffect(() => {
     const uniqueLetters = [...new Set(letters)];
 
-    if (guessedLetters.length === uniqueLetters.length) {
+    if (
+      guessedLetters.length === uniqueLetters.length &&
+      gameStage === stages[1].name
+    ) {
       setScore((prevScore) => (prevScore += 100));
 
       clearAllStates();
@@ -114,8 +116,8 @@ function App() {
 
   const restartGame = () => {
     setGuesses(guesseQtdy);
-    setScore(0);
     setGameStage(stages[0].name);
+    setScore(0);
   };
 
   return (
